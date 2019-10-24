@@ -1,5 +1,5 @@
 import os
-
+import sys
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
@@ -23,7 +23,14 @@ def authorization():
     request = youtube.search().list(part = "snippet", q = query, type = 'channel', maxResults = 3)
     response = request.execute()
 
-    return response
+    if response['pageInfo']['totalResults'] == 0:
+
+        print("Please type a more accurate query")
+        sys.exit()
+
+    else:
+
+        return response
 
 #storing the results fetched from response in a dictionary
 def getData():
@@ -47,4 +54,3 @@ def getData():
     infoDict['channelTitle'] = channelTitleList
 
     return infoDict
-    

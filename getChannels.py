@@ -30,5 +30,6 @@ def extractData():
     infoDict['imgSrc'] = imgSrcList
     infoDict['channelTitles'] = data['channelTitle']
     infoDict['channelIdList'] = data['channelId']
+    driver.quit()
 
     return infoDict

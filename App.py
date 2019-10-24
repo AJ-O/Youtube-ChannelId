@@ -32,11 +32,12 @@ class App(QMainWindow):
         subCountList = data['subscriberCount']
         channelTitleList = data['channelTitles']
         channelIdList = data['channelIdList']
+        times = len(data['subscriberCount'])
 
-
-        for i in range(3):
+        for i in range(times):
             
             #open the url contained in the imageSrcList and get the image
+
             data = urllib.request.urlopen(imgSrcList[i]).read()
             image = QImage()
             image.loadFromData(data)
