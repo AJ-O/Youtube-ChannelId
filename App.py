@@ -7,12 +7,14 @@ from PyQt5.QtCore import pyqtSlot, QCoreApplication
 from functools import partial
 from getChannels import extractData
 
-
+#This file is to create a widget to show subscriber count, channel title and image of the channel
+#so that the user selects the channel they wanted and get that channels' Id
 class App(QMainWindow):
 
     def __init__(self):
+
         super().__init__()
-        self.title = 'PyQt5 textbox - pythonspot.com'
+        self.title = 'Youtube ChannelId'
         self.left = 450
         self.top = 80
         self.width = 350
@@ -24,6 +26,7 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
+        #getting all the data returned by the extractData function of the getChannels file
         data = extractData()
         imgSrcList = data['imgSrc']
         subCountList = data['subscriberCount']
@@ -32,16 +35,17 @@ class App(QMainWindow):
 
 
         for i in range(3):
-
+            
+            #open the url contained in the imageSrcList and get the image
             data = urllib.request.urlopen(imgSrcList[i]).read()
             image = QImage()
             image.loadFromData(data)
 
-            imageLabel = QLabel(self)
-            imageLabel.resize(90, 90)
+            imageLabel = QLabel(self)#image needs to be embedded in a label
+            imageLabel.resize(90, 90)#set the size of the label
             pixmap = QPixmap(image)
-            pixmap_changed = pixmap.scaled(90, 90)
-            imageLabel.setPixmap(pixmap_changed)
+            pixmap_changed = pixmap.scaled(90, 90)#scale the image received from the imgage source to 90 * 90
+            imageLabel.setPixmap(pixmap_changed)#Embed the image in the label
             imageLabel.move(10, (i * 100))
 
             title = QLabel(channelTitleList[i], self)
@@ -51,8 +55,8 @@ class App(QMainWindow):
             sub.move(125, (30 + (i *100)))
 
             button = QPushButton('THIS ONE', self)
-            button.move(220, (20 + (i * 100)))
-            button.clicked.connect(partial(self.on_click, channelIdList[i]))
+            button.move(220, (20 + (i * 110)))
+            button.clicked.connect(partial(self.on_click, channelIdList[i]))#partial to pass the channelId as argument when button is clicked
 
         self.show()
     
@@ -60,7 +64,7 @@ class App(QMainWindow):
 
         print("Here's your selected channels id: ", id)
         print("Ok Bye!")
-        QCoreApplication.instance().quit()
+        QCoreApplication.instance().quit()#Quit once the id is selected by the user
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
